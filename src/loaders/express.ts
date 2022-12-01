@@ -4,11 +4,11 @@ import routes from '../api';
 import config from '../config';
 
 export default ({ app }: { app: express.Application }) => {
-    app.get('/status', (req, res) => {
+    app.get('/health', (req, res) => {
         res.status(200).end();
     });
 
-    app.head('/status', (req, res) => {
+    app.head('/health', (req, res) => {
         res.status(200).end();  
     });
 

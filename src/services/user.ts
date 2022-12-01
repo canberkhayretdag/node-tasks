@@ -2,11 +2,11 @@ import User from "../models/User";
 import { Op, Sequelize } from "sequelize";
 import { sequelize } from "../loaders/postgres";
 import { Service, Inject } from 'typedi';
-import { UserRepository } from "../data-access/repositories/UserRepository";
+import { UserRepository, repository as userRepository } from "../data-access/repositories/UserRepository";
 import { IUserInputDTO } from "../interfaces/IUser";
 
 @Service()
-export default class UserService {
+export class UserService {
 
     private userRepository: UserRepository
 
@@ -14,7 +14,7 @@ export default class UserService {
         this.userRepository = userRepository;
     }
     
-    async getById(id: string) {
+    async getById(id: number) {
       try {
         const user = await this.userRepository.findOne(id)
         return user;
@@ -41,7 +41,7 @@ export default class UserService {
       }
     }
   
-    async deleteUser(id: string) {
+    async deleteUser(id: number) {
       try {
         const result = await this.userRepository.delete(id)
         return result;
@@ -50,7 +50,7 @@ export default class UserService {
       }
     }
   
-    async updateUser(id: string, updateUserDto: IUserInputDTO) {
+    async updateUser(id: number, updateUserDto: IUserInputDTO) {
       try {
         const updatedUser = await this.userRepository.update(id, updateUserDto);
 
@@ -69,3 +69,5 @@ export default class UserService {
       }
     }
   }
+
+export const userService = new UserService(userRepository);

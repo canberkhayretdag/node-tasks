@@ -1,7 +1,7 @@
-import { IWrite } from '../../interfaces/IWrite';
-import { IRead } from '../../interfaces/IRead';
+import { IWrite, IRead } from '../../interfaces';
 import { BuildOptions, Model } from "sequelize";
 import { IUser } from '../../../interfaces/IUser'
+import { IToken } from '../../../interfaces/IToken';
 
 type ModelStatic = typeof Model & (new(values?: object, options?: BuildOptions) => Model)
 
@@ -17,7 +17,7 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
         const result = await this._model.create(item);
         return (result ? true : false)
     }
-    async update(id: string, item: T | any): Promise<boolean> {
+    async update(id: number, item: T | any): Promise<boolean> {
         const result: T | any = await this._model.update(item, {
                 where: {
                   id: id,
@@ -26,7 +26,7 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
         );
         return result
     }
-    async delete(id: string): Promise<boolean> {
+    async delete(id: number): Promise<boolean> {
         const result: T | any  = await this._model.destroy({
             where: {
               id: id,
@@ -38,7 +38,7 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
         const result: T | any = await this._model.findAll();
         return result
     }
-    async findOne(id: string): Promise<T> {
+    async findOne(id: number): Promise<T> {
         const result: T | any = await this._model.findByPk(id)
         return result
     }

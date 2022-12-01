@@ -1,14 +1,11 @@
 import { Router, Request, Response } from 'express';
-import { UserRepository } from '../../data-access/repositories/UserRepository';
+import { repository as userRepository } from '../../data-access/repositories/UserRepository';
 import User from '../../models/User';
-import UserService from '../../services/user';
+import { userService } from '../../services/user';
 import { checkAuth } from '../middlewares/auth'
 import { IUserInputDTO } from '../../interfaces/IUser';
 import middlewares from '../middlewares';
 const route = Router();
-
-const userRepository = new UserRepository(User)
-const userService = new UserService(userRepository)
 
 export default (app: Router) => {
     app.use('/users', route);
@@ -30,7 +27,7 @@ export default (app: Router) => {
 
     route.get("/:id", middlewares.checkAuth, async (req: Request, res:Response) => {
         if (req.params.id) {
-            const user = await userService.getById(req.params.id);
+            const user = await userService.getById(parseInt(req.params.id));
             if (user) {
               return res.status(200).send(user);
             }
@@ -49,7 +46,7 @@ export default (app: Router) => {
 
     route.put("/:id", middlewares.checkAuth, async (req: Request, res:Response) => {
         const userUpdateDTO: IUserInputDTO = req.body;
-        const updatedUser = await userService.updateUser(req.params.id, userUpdateDTO);
+        const updatedUser = await userService.updateUser(parseInt(req.params.id), userUpdateDTO);
         if (updatedUser) {
             return res.status(200).send("OK");
           }
@@ -57,7 +54,7 @@ export default (app: Router) => {
     })
 
     route.delete("/:id", middlewares.checkAuth, async (req: Request, res:Response) => {
-        const result = await userService.deleteUser(req.params.id);
+        const result = await userService.deleteUser(parseInt(req.params.id));
         if (result) {
           return res.status(200).send("OK");
         }

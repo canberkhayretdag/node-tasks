@@ -3,11 +3,15 @@ import config from "../config";
 
 const sequelize = new Sequelize(config.DB);
 
-try {
-    sequelize.authenticate();
+const connectToSequlize = async () => {
+  try {
+    await sequelize.authenticate();
     console.log("Connection has been established successfully.");
   } catch (_) {
     console.error("Unable to connect to the database.");
   }
+}
   
-  export { sequelize };
+connectToSequlize();
+
+export { sequelize };

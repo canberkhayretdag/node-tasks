@@ -1,20 +1,21 @@
 import joi from "joi";
+import { Request, Response, NextFunction } from 'express';
+import { z } from 'zod';
+import { IUserInputDTO } from '../../interfaces/IUser'
 
-const userCreateValidation = (userCreateDto) => {
-  const schema = joi.object({
-    login: joi.string().min(6).required(),
-    password: joi.string().min(6).alphanum().required(),
-    age: joi.number().min(4).max(130),
-  });
-  return schema.validate(userCreateDto);
-};
+const userValidation = z.object({
+  login: z.string().min(6),
+  password: z.string().min(6),
+  age: z.number().min(4).max(130).optional(),
+})
 
-const validateUser = (req, res, next) => {
-  const { error } = userCreateValidation(req.body);
-  if (error) {
-    return res.status(400).send(error.details[0].message);
+const validateUser = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    userValidation.parse(req.body);
+    return next();
+  } catch (error) {
+    return res.status(400).send(error);
   }
-  next();
 };
 
 export { validateUser };

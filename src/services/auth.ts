@@ -20,7 +20,7 @@ export default class AuthService {
     
     async login (username: string, password: string): Promise<string> {
         try {
-            const result = await this.userRepository.findByLogin(username, password);
+            const result = await this.userRepository.checkIfUserExists(username, password);
             if (result) {
                 const token = Math.random().toString(36).substring(2, 12);
                 await this.authRepository.create({

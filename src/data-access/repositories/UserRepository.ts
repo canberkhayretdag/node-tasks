@@ -1,6 +1,7 @@
 import { BaseRepository } from "./base/BaseRepository";
 import { IUser } from "../../interfaces/IUser";
 import { Op } from "sequelize";
+import User from "../../models/User";
 
 
 export class UserRepository extends BaseRepository<IUser> {
@@ -17,7 +18,7 @@ export class UserRepository extends BaseRepository<IUser> {
         return result
     }
 
-    async findByLogin(username: string, password: string): Promise<boolean> {
+    async checkIfUserExists(username: string, password: string): Promise<boolean> {
         const result = await this._model.findOne({
           where: {
             [Op.and]: [{ login: username }, { password: password }],
@@ -30,3 +31,5 @@ export class UserRepository extends BaseRepository<IUser> {
     }
 
 }
+
+export const repository = new UserRepository(User);

@@ -22,7 +22,8 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.25.8",
     "typedi": "^0.10.0",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

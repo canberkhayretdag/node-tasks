@@ -1,4 +1,4 @@
 export interface IToken {
-    id: string;
+    id: number;
     value: string;
   }
