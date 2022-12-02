@@ -4,14 +4,22 @@ import { sequelize } from "../loaders/postgres";
 import { Service, Inject } from 'typedi';
 import { UserRepository, repository as userRepository } from "../data-access/repositories/UserRepository";
 import { IUserInputDTO } from "../interfaces/IUser";
+import { GroupRepository, repository as groupRepository  } from "@/data-access/repositories/GroupRepository";
+import { UserGroupRepository, repository as userGroupRepository  } from "@/data-access/repositories/UserGroupRepository";
 
 @Service()
 export class UserService {
 
     private userRepository: UserRepository
+    private groupRepository: GroupRepository
+    private userGroupRepository: UserGroupRepository
 
-    constructor(userRepository: UserRepository) {
+    constructor(
+      userRepository: UserRepository,
+      userGroupRepository: UserGroupRepository
+    ) {
         this.userRepository = userRepository;
+        this.userGroupRepository = userGroupRepository;
     }
     
     async getById(id: number) {
@@ -43,7 +51,8 @@ export class UserService {
   
     async deleteUser(id: number) {
       try {
-        const result = await this.userRepository.delete(id)
+        const result = await this.userRepository.delete(id);
+        await this.userGroupRepository.deleteByUserId(id);
         return result;
       } catch (error) {
         console.log(error);
@@ -68,6 +77,16 @@ export class UserService {
         console.error(error);
       }
     }
+
+    async addUsersToGroup (groupId: number, userIds: Array<number>) {
+      try {
+        const result = await this.userGroupRepository.addUsersToGroup(groupId, userIds);
+        return result;
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
   }
 
-export const userService = new UserService(userRepository);
+export const userService = new UserService(userRepository, userGroupRepository);
