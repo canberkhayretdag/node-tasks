@@ -10,4 +10,4 @@ export interface IUserInputDTO {
     login: string;
     password: string;
     age: number;
-  }
+}

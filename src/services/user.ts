@@ -4,14 +4,12 @@ import { sequelize } from "../loaders/postgres";
 import { Service, Inject } from 'typedi';
 import { UserRepository, repository as userRepository } from "../data-access/repositories/UserRepository";
 import { IUserInputDTO } from "../interfaces/IUser";
-import { GroupRepository, repository as groupRepository  } from "@/data-access/repositories/GroupRepository";
-import { UserGroupRepository, repository as userGroupRepository  } from "@/data-access/repositories/UserGroupRepository";
+import { UserGroupRepository, repository as userGroupRepository  } from "../data-access/repositories/UserGroupRepository";
 
 @Service()
 export class UserService {
 
     private userRepository: UserRepository
-    private groupRepository: GroupRepository
     private userGroupRepository: UserGroupRepository
 
     constructor(

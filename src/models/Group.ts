@@ -12,7 +12,7 @@ const Group = sequelize.define("Groups", {
       allowNull: false,
     },
     permissions: {
-      type: DataTypes.ARRAY,
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
     },
     createdAt: {

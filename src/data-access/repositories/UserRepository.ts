@@ -2,7 +2,7 @@ import { BaseRepository } from "./base/BaseRepository";
 import { IUser } from "../../interfaces/IUser";
 import { Op } from "sequelize";
 import User from "../../models/User";
-
+import { Model } from "sequelize";
 
 export class UserRepository extends BaseRepository<IUser> {
     async suggest(str: string, limit: number): Promise<IUser[] | any> {
@@ -18,16 +18,16 @@ export class UserRepository extends BaseRepository<IUser> {
         return result
     }
 
-    async checkIfUserExists(username: string, password: string): Promise<boolean> {
-        const result = await this._model.findOne({
+    async checkIfUserExists(username: string, password: string): Promise<IUser | any> {
+        const result = await User.findOne({
           where: {
             [Op.and]: [{ login: username }, { password: password }],
           },
         })
         if (result) {
-          return true
+          return result;
         }
-        return false;
+        return null;
     }
 
 }

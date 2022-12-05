@@ -1,8 +1,8 @@
 import { BaseRepository } from "./base/BaseRepository";
 import { IUserGroup } from "../../interfaces/IUserGroup";
 import UserGroup from "../../models/UserGroup";
-import { sequelize } from "@/loaders/postgres";
-import Group from "@/models/Group";
+import { sequelize } from "../../loaders/postgres";
+import Group from "../../models/Group";
 
 export class UserGroupRepository extends BaseRepository<IUserGroup> {
   async deleteByUserId(userId: number): Promise<number> {

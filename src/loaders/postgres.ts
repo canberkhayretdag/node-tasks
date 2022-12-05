@@ -12,6 +12,10 @@ const connectToSequlize = async () => {
   }
 }
   
-connectToSequlize();
+(async () => {
+  connectToSequlize();
+})().catch(err => {
+  console.error(err);
+});
 
 export { sequelize };

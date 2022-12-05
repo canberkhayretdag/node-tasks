@@ -61,7 +61,7 @@ export default (app: Router) => {
         return res.status(400).send("Not Found");
     })
 
-    route.post("/addUsersToGroup", middlewares.checkAuth, async (req: Request, res:Response) => {
+    route.post("/add-users-to-group", middlewares.checkAuth, async (req: Request, res:Response) => {
       if (req.body.groupId && req.body.userIds) {
         const result = await userService.addUsersToGroup(req.body.groupId, req.body.userIds);
         if (result) {

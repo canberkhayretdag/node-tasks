@@ -11,4 +11,5 @@ export default {
     api: {
       prefix: '/api/v1',
     },
+    secretKey: process.env.TOKEN_SECRET
 };

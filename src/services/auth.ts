@@ -6,6 +6,9 @@ import { UserRepository } from "../data-access/repositories/UserRepository";
 import { IUserInputDTO } from "../interfaces/IUser";
 import Token from "../models/Token";
 import { AuthRepository } from "../data-access/repositories/AuthRepository";
+import jwt from "jsonwebtoken";
+import { IUser } from "../interfaces/IUser";
+import config from "../config";
 
 @Service()
 export default class AuthService {
@@ -20,9 +23,13 @@ export default class AuthService {
     
     async login (username: string, password: string): Promise<string> {
         try {
-            const result = await this.userRepository.checkIfUserExists(username, password);
-            if (result) {
-                const token = Math.random().toString(36).substring(2, 12);
+            const user: IUser = await this.userRepository.checkIfUserExists(username, password);
+            if (user) {
+                const token = jwt.sign(
+                    { userId: user.id, email: user.login },
+                    config.secretKey,
+                    { expiresIn: "1h" }
+                )
                 await this.authRepository.create({
                     value: token,
                 });

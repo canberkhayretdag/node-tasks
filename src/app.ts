@@ -7,6 +7,10 @@ async function startServer() {
     const app = express();
     await require('./loaders').default({ expressApp: app });
 
+    process.on('unhandledRejection', function(err) {
+      console.error(err); // log the error
+    });
+    
     app.listen(config.port, () => {
       console.info(`
         ################################################
